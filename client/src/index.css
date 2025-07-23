@@ -4,7 +4,7 @@
 /* import tailwndcss to enable tailwindcss use */
 @import "tailwindcss";
 
-@theme {
+@theme{
     --color-primary: #2563EB;
     --color-secondary: #FBBF24;
 }

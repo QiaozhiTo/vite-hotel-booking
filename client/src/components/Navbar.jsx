@@ -1,6 +1,13 @@
 import React from 'react'
-import { Link } from 'react-router-dom';
+import { Link,useNavigate, useLocation } from 'react-router-dom';
 import { assets } from '../assets/assets';
+import { useClerk ,useUser, UserButton} from '@clerk/clerk-react';
+
+const BookIcon = () => (
+     <svg className="w-4 h-4 text-gray-700" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24" >
+    <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 19V4a1 1 0 0 1 1-1h12a1 1 0 0 1 1 1v13H7a2 2 0 0 0-2 2Zm0 0a2 2 0 0 0 2 2h12M9 3v14m7 0v4" />
+</svg>
+)
 //  we use prebuilt UI to build up navigation bar
 const Navbar = () => {
     const navLinks = [
@@ -14,6 +21,10 @@ const Navbar = () => {
 
     const [isScrolled, setIsScrolled] = React.useState(false);
     const [isMenuOpen, setIsMenuOpen] = React.useState(false);
+    const {openSignIn} = useClerk();
+    const {user} = useUser();
+    const {navigate} = useNavigate();
+    const {location} = useLocation();
 
     React.useEffect(() => {
         const handleScroll = () => {
@@ -29,7 +40,7 @@ const Navbar = () => {
 
     return (
         // <div ref={ref} className="h-88 md:h-64 overflow-y-scroll">
-            <nav className={`fixed top-0 left-0 bg-indigo-500 w-full flex items-center justify-between px-4 md:px-16 lg:px-24 xl:px-32 transition-all duration-500 z-50 ${isScrolled ? "bg-white/80 shadow-md text-gray-700 backdrop-blur-lg py-3 md:py-4" : "py-4 md:py-6"}`}>
+            <nav className={`fixed top-0 left-0 w-full flex items-center justify-between px-4 md:px-16 lg:px-24 xl:px-32 transition-all duration-500 z-50 ${isScrolled ? "bg-white/80 shadow-md text-gray-700 backdrop-blur-lg py-3 md:py-4" : "py-4 md:py-6"}`}>
 
                 {/* Logo */}
                 <Link to='/'>
@@ -56,10 +67,19 @@ const Navbar = () => {
                         <line x1="21" y1="21" x2="16.65" y2="16.65" />
                     </svg> */}
                     <img src={assets.searchIcon} alt="search" className={`${isScrolled && 'invert'} h-7 transition-all duration-500`} />
-              
-                    <button className={`px-8 py-2.5 rounded-full ml-4 transition-all duration-500 ${isScrolled ? "text-white bg-black" : "bg-white text-black"}`}>
+                    {user ? 
+                    (<UserButton>
+                        <UserButton.MenuItems>
+                            <UserButton.Action label = "My Bookings" labelIcon = {<BookIcon/>} 
+                            onClick={() =>  navigate('/my-bookings')}/>
+                        </UserButton.MenuItems>
+                    </UserButton>) 
+                    : 
+                    (<button onClick = {openSignIn} className='bg-black text-white px-8 py-2.5 rounded-full ml-4 transition-all duration-500'>
                         Login
-                    </button>
+                    </button>)
+                    }
+                    
                 </div>
 
                 {/* Mobile Menu Button */}
@@ -68,7 +88,7 @@ const Navbar = () => {
                 </div>
 
                 {/* Mobile Menu */}
-                <div className={`fixed top-0 left-0 w-full h-screen bg-white text-base flex flex-col md:hidden items-center justify-center gap-6 font-medium text-gray-800 transition-all duration-500 ${isMenuOpen ? "translate-x-0" : "-translate-x-full"}`}>
+                <div className={`fixed top-0 left-0 w-full h-screen text-base flex flex-col md:hidden items-center justify-center gap-6 font-medium text-gray-800 transition-all duration-500 ${isMenuOpen ? "translate-x-0" : "-translate-x-full"}`}>
                     <button className="absolute top-4 right-4" onClick={() => setIsMenuOpen(false)}>
                      <img src={assets.closeIcon} alt="close-menu" className="h-6.5"  />
                     </button>
@@ -83,7 +103,7 @@ const Navbar = () => {
                     Dashboard
                     </button>
 
-                    <button className="bg-black text-white px-8 py-2.5 rounded-full transition-all duration-500">
+                    <button  onClick = {openSignIn} className="bg-black text-white px-8 py-2.5 rounded-full transition-all duration-500">
                         Login
                     </button>
                 </div>

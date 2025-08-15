@@ -18,5 +18,7 @@ createRoot(document.getElementById('root')).render(
   <BrowserRouter>
     <App />
   </BrowserRouter>
+
   </ClerkProvider>,
 )
+// 08/03/2025 add clerk sign in <ClerkProvider/>

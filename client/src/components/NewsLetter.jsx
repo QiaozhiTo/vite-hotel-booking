@@ -1,7 +1,7 @@
 import React from 'react'
 import { assets } from '../assets/assets'
 
-const Subscribe = () => {
+const NewsLetter = () => {
   return (
     <div className='flex flex-col items-center max-w-5xl lg:w-full rounded-2xl px-4 py-12 md:py-16 mx-2 lg:mx-auto my-30 bg-gray-900 text-white'> 
         <h1 className=' text-4xl md:text-[40px] font-playfair'>Stay Inspired</h1>
@@ -19,4 +19,4 @@ const Subscribe = () => {
   )
 }
 
-export default Subscribe
+export default NewsLetter

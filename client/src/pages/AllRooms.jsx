@@ -1,18 +1,18 @@
 import React, { useState } from 'react'
 import {assets, facilityIcons, roomsDummyData } from '../assets/assets'
-import { hotelDummyData} from '../assets/assets'
 import StarRating from '../components/StarRating'
 import { useNavigate } from 'react-router-dom'
 
 const  CheckBox = ({label, selected = false, onChange = () => {}}) =>{
   return (
     <label className='flex gap-3 items-center cursor-pointer mt-2 text-sm'>
-      <input type='checkbox' checked={selected} onChange={(e) => onChange(e.target.checked)}/>
+      <input type='checkbox' checked={selected} onChange={(e) => onChange(e.target.checked,label)}/>
       <span className='font-light select-none'>{label}</span>
     </label>
   )
 
 }
+
 
 const  RadioButton = ({label, selected = false, onChange = () => {}}) =>{
   return (
@@ -79,12 +79,8 @@ const AllRooms = () => {
                   <img src={assets.locationIcon} alt="location-icon"></img>
                   <p>{item.hotel.address}</p>
                 </div>
-{/* 
-                <div>
-                  <div className='flex flex-wrap items-center mt-3 mb-6 gap-4' >
-                    <div className='flex items-center gap-2 px-3 py-2 rounded-lg bg-[#F5F5FF]/70'>{item.amenities}</div>
-                  </div>
-                </div> */}
+
+{/* amenity */}
                 <div className='flex flex-wrap items-center mt-3 gap-4 mb-6'>
                   {item.amenities.map((amenity, index) => (
                     <div key = {index} className='flex items-center gap-2 px-3 py-2 rounded-lg bg-[#F5F5FF]/70'>
@@ -138,14 +134,14 @@ const AllRooms = () => {
             </div>
 
             <div className='px-5 pt-5'>
-              <p className='font-medium text-gray-800 pb-2'>Popular filters</p>
+              <p className='font-medium text-gray-800 pb-2'>Price Range</p>
               {priceRange.map((range, index)=>(
                 <CheckBox key={index} label={`$ ${range}`}/>
               ))}
             </div>
 
              <div className='px-5 pt-5 pb-7'>
-              <p className='font-medium text-gray-800 pb-2'>Popular filters</p>
+              <p className='font-medium text-gray-800 pb-2'>Sort By</p>
               {sortOptions.map((option, index)=>(
                 <RadioButton key={index} label={option}/>
               ))}

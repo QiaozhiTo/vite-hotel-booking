@@ -52,28 +52,30 @@ const AddRoom = () => {
 
                     </select>
                 </div>
+
                 <div>
                     <p className='mt-4 text-gray-800'>Price <span className='text-xs'>/night</span></p>
                     <input placeholder='0' type='number' className='border border-gray-300 mt-1 rounded p-2 w-24'
                     onChange={e => setInputs({...inputs, pricePerNight:e.target.value})}></input>
                 </div>
 
-                <p className='text-gray-800 mt-4'>Amenities</p>
-                <div className='flex flex-col flex-wrap mt-1 text-gray-400 max-w-sm'>
-                    {Object.keys(inputs.amenities).map((amenity,index) => (
-                        <div>
-                            <input id={`amenities${index+1}`} type='checkbox' 
-                            checked={inputs.amenities[amenity]} onChange={() => setInputs({
-                                amenities:{...inputs.amenities, [amenity]:!inputs.amenities [amenity]}
-                            })}/>
-                            <label htmlFor={`amenities${index+1}`}> {amenity}</label>
-                        </div>
-                    ))}
-                
-                </div>
-
-                <button className='bg-primary text-white px-8 py-2 rounded mt-8 cursor-pointer'>Add Room</button>
             </div>
+
+            <p className='text-gray-800 mt-4'>Amenities</p>
+            <div className='flex flex-col flex-wrap mt-1 text-gray-400 max-w-sm'>
+                {Object.keys(inputs.amenities).map((amenity,index) => (
+                    <div>
+                        <input id={`amenities${index+1}`} type='checkbox' 
+                        checked={inputs.amenities[amenity]} onChange={() => setInputs({
+                            amenities:{...inputs.amenities, [amenity]:!inputs.amenities [amenity]}
+                        })}/>
+                        <label htmlFor={`amenities${index+1}`}> {amenity}</label>
+                    </div>
+                ))}
+            
+            </div>
+
+            <button className='bg-primary text-white px-8 py-2 rounded mt-8 cursor-pointer'>Add Room</button>
         </form>
 
     </div>

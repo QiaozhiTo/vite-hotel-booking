@@ -32,13 +32,12 @@ const Dashboard = () => {
         <div className='w-full max-w-3xl text-left border border-gray-300 rounded-lg max-h-80 overflow-y-scroll'>
             <table className='w-full'>
                 <thead className='bg-gray-50'>
-                    <th >
-                         <th className='py-3 px-4 text-gray-800 font-medium'>User Name</th>
+                    <tr>
+                    <th className='py-3 px-4 text-gray-800 font-medium'>User Name</th>
                     <th className='py-3 px-4 text-gray-800 font-medium max-sm:hidden'>Room Name</th>
                     <th className='py-3 px-4 text-gray-800 font-medium text-center'>Total Amount</th>
                     <th className='py-3 px-4 text-gray-800 font-medium text-center'>Payment Status</th>
-
-                    </th>
+                    </tr>
                 </thead>
             <tbody className='text-sm'>
                 {dashboardDummyData.bookings.map((item, index) => (
@@ -55,11 +54,9 @@ const Dashboard = () => {
                             $ {item.totalPrice}
                         </td>
 
-                        <td className='max-sm:hidden py-3 px-4 text-gray-700 border-t border-gray-300' >
+                        <td className='max-sm:hidden py-3 px-4 text-gray-700 border-t border-gray-300 text-center' >
                             <button className={`py-1 px-3 text-xs rounded-full max-auto ${item.isPaid ? 'bg-green-200 text-green-600':'bg-amber-200 text-yellow-600'} `}>{item.isPaid ? 'Completed' :'Pending'}</button>
                         </td>
-
-
 
                     </tr>
 

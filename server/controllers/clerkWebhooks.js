@@ -3,7 +3,6 @@ import { Webhook } from 'svix';
 
 const clerkWebhooks = async (req, res) =>{
     try{
-        console.log('payload:', payload.toString());
 
         console.log('🔔 /api/clerk webhook hit');   // <--- 关键调试点
 

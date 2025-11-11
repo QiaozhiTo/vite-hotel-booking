@@ -12,18 +12,13 @@ connectDB() //call connectDB function, 'npm run server' will see Database connec
 const app = express()
 app.use(cors()) // enable cross-origin resource sharing
 
-app.post(
-  "/api/clerk",
-  express.raw({ type: "application/json" }),
-  clerkWebhooks
-);
+app.post( "/api/clerk",  express.raw({ type: "application/json" }),  clerkWebhooks);
 //middleware
 app.use(express.json())
 app.use(clerkMiddleware())
 
-// API to listen to clerk webhooks
+// API to listen to clerk webhooks //wrong order.
 // app.use('/api/clerk',clerkWebhooks)
-// app.use('/api/clerk',clerkWebhooks);
 
 app.get('/', (req, res) => res.send("API is working"))
 const PORT = process.env.PORT || 3000;

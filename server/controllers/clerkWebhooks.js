@@ -3,6 +3,8 @@ import { Webhook } from 'svix';
 
 const clerkWebhooks = async (req, res) =>{
     try{
+        console.log('payload:', payload.toString());
+
         console.log('🔔 /api/clerk webhook hit');   // <--- 关键调试点
 
         const whook = new Webhook(process.env.CLERK_WEBHOOK_SECRET)
@@ -13,10 +15,7 @@ const clerkWebhooks = async (req, res) =>{
         };
 
         //verify headers
-        // await whook.verify(JSON.stringify(req.body), headers)
-
-        //getting data from request body
-        // const {data, type} = req.body
+        
         const payload = req.body;   // Buffer
 
     // ✅ verify 返回的是 event 对象
@@ -43,7 +42,7 @@ const clerkWebhooks = async (req, res) =>{
         }
         // const userData = {
         //     _id:data.id,
-        //     email: data.email_addresses[0].email_address,
+        //     email: data.email_addresses[0].email_address,  // error
         //     username: data.first_name + " " + data.last_name,
         //     image: data.image_url,
         // };

@@ -5,6 +5,7 @@ import "dotenv/config";
 import cors from "cors";
 import connectDB from "./configs/db.js";
 import { clerkMiddleware } from '@clerk/express'
+import clerkWebhooks from "./controllers/clerkWebhooks.js";
 
 
 connectDB() //call connectDB function, 'npm run server' will see Database connected
@@ -15,15 +16,13 @@ app.use(cors()) // enable cross-origin resource sharing
 app.use(express.json())
 app.use(clerkMiddleware())
 
-// Start the server and listen on the specified port
-app.listen(PORT, () => {
-  console.log(`Example app listening at http://localhost:${PORT}`)
-})
-
+// API to listen to clerk webhooks
+app.get('/api/clerk',clerkWebhooks)
 
 app.get('/', (req, res) => res.send("API is working"))
 const PORT = process.env.PORT || 3000;
 
+// Start the server and listen on the specified port
 app.listen(PORT, ()=> console.log(`Server running on port ${PORT}`));
 
 

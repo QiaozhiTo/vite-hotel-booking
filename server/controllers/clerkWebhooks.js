@@ -24,24 +24,47 @@ const clerkWebhooks = async (req, res) =>{
         const { data, type } = evt;
 
         console.log('✅ Clerk webhook event:', type);
-        const userData = {
-            _id:data.id,
-            email: data.email_addresses[0].email_address,
-            username: data.first_name + " " + data.last_name,
-            image: data.image_url,
+
+        let userData = null;
+        if (type === 'user.created' || type === 'user.updated') {
+        // 尝试拿 primary email，没有就拿第一个
+        const primaryEmailObj =
+            data.email_addresses?.find(e => e.id === data.primary_email_address_id) ||
+            data.email_addresses?.[0];
+
+        userData = {
+            _id: data.id,
+            email: primaryEmailObj?.email_address || '',
+            username: `${data.first_name || ''} ${data.last_name || ''}`.trim(),
+            image: data.image_url || '',
         };
+
+        console.log('📦 userData to save:', userData);
+        }
+        // const userData = {
+        //     _id:data.id,
+        //     email: data.email_addresses[0].email_address,
+        //     username: data.first_name + " " + data.last_name,
+        //     image: data.image_url,
+        // };
         // switch cases for different events
         switch (type){
             case "user.created":{
                 await User.create(userData);
+                console.log('💾 user.created saved to Mongo');
                 break;
             }
              case "user.updated":{
-                await User.findByIdAndUpdate(data.id, userData);
+                // await User.findByIdAndUpdate(data.id, userData);
+                await User.findByIdAndUpdate(data.id, userData, { new: true });
+                console.log('💾 user.updated saved to Mongo');
+
                 break;
+
             }
               case "user.deleted":{
                 await User.findByIdAndDelete(data.id);
+                console.log('💾 user.deleted removed from Mongo');
                 break;
             }
 

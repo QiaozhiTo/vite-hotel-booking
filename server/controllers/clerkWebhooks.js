@@ -3,27 +3,35 @@ import { Webhook } from 'svix';
 
 const clerkWebhooks = async (req, res) =>{
     try{
+        console.log('🔔 /api/clerk webhook hit');   // <--- 关键调试点
+
         const whook = new Webhook(process.env.CLERK_WEBHOOK_SECRET)
         const headers = {
             "svix-id":req.headers["svix-id"],
             "svix-timestamp": req.headers["svix-timestamp"],
-            "svix-signature": req.headers["svix-signature"],
-
-
+            "svix-signature": req.headers["svix-signature"]
         };
+
         //verify headers
-        await whook.verify(JSON.stringify(req.body), headers)
+        // await whook.verify(JSON.stringify(req.body), headers)
 
         //getting data from request body
-        const {data, type} = req.body
+        // const {data, type} = req.body
+        const payload = req.body;   // Buffer
+
+    // ✅ verify 返回的是 event 对象
+        const evt = await whook.verify(payload, headers);
+        const { data, type } = evt;
+
+        console.log('✅ Clerk webhook event:', type);
         const userData = {
             _id:data.id,
             email: data.email_addresses[0].email_address,
             username: data.first_name + " " + data.last_name,
             image: data.image_url,
-        }
-        // switch cases fro different events
-        switch (ty){
+        };
+        // switch cases for different events
+        switch (type){
             case "user.created":{
                 await User.create(userData);
                 break;
@@ -33,12 +41,10 @@ const clerkWebhooks = async (req, res) =>{
                 break;
             }
               case "user.deleted":{
-                await User.findByIdAndUpdate(data.id);
+                await User.findByIdAndDelete(data.id);
                 break;
             }
 
-
-            
             default:
                 break;
         }

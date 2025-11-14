@@ -23,6 +23,7 @@ app.post( "/api/clerk",  express.raw({ type: "application/json" }),  clerkWebhoo
 //middleware
 app.use(express.json())
 app.use(clerkMiddleware())
+// app.get('/api/hotels/ping', (req,res)=>res.send('pong'));
 
 // API to listen to clerk webhooks //wrong order.
 // app.use('/api/clerk',clerkWebhooks)

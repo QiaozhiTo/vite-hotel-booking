@@ -5,6 +5,7 @@ import App from './App.jsx'
 // BrowserRouter to wrap our APP
 import { BrowserRouter } from 'react-router-dom'
 import { ClerkProvider } from '@clerk/clerk-react'
+import { AppProvider } from './context/AppContext.jsX'
 
 const PUBLISHABLE_KEY = import.meta.env.VITE_CLERK_PUBLISHABLE_KEY
 
@@ -16,7 +17,10 @@ createRoot(document.getElementById('root')).render(
   <ClerkProvider publishableKey={PUBLISHABLE_KEY} afterSignOutUrl='/'>
 
   <BrowserRouter>
-    <App />
+    <AppProvider>
+      <App/>
+    </AppProvider>
+   
   </BrowserRouter>
 
   </ClerkProvider>,

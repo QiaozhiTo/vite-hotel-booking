@@ -12,18 +12,22 @@ import Layout from './pages/hotelOwner/Layout';
 import Dashboard from './pages/hotelOwner/Dashboard';
 import AddRoom from './pages/hotelOwner/AddRoom';
 import ListRoom from './pages/hotelOwner/ListRoom';
+import {Toaster} from "react-hot-toast"
+import { useAppContext } from './context/AppContext.jsX';
 
 const App = () => {
 
   const isOwnerPath = useLocation().pathname.includes("owner"); /*true*/
-
+  const { showHotelReg} = useAppContext();
 
   return (
     <div>
+      <Toaster/>
       {/* not owner dashboard to show Navbar, else not showing up Navbar */}
       {!isOwnerPath && <Navbar />}
+      {showHotelReg && <HotelReg/>}
       {/* for now we make it false to keep it hidden  */}
-      {false && <HotelReg/>} 
+      {/* {false && <HotelReg/>}  */}
       <div className='min-h-[70vh'>
         <Routes>
           <Route path='/' element = {<Home/>}></Route>

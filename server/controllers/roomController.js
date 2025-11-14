@@ -1,6 +1,5 @@
 import Room from "../models/room.js";
 import Hotel from "../models/Hotel.js";
-import User from "../models/User";
 import { v2 as cloudinary } from "cloudinary";
 import { response } from "express";
 import { populate } from "dotenv";

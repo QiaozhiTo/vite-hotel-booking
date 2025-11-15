@@ -1,14 +1,13 @@
 import Room from "../models/room.js";
 import Hotel from "../models/Hotel.js";
 import { v2 as cloudinary } from "cloudinary";
-import { response } from "express";
-import { populate } from "dotenv";
+
 
 //API to create a new room for a hotel
 export const createRoom = async(req, res)=>{
     try {
         const {roomType, pricePerNight, amenities} = req.body;
-        const hotel = await Hotel.findOne({owner:req.auth.userId})
+        const hotel = await Hotel.findOne({owner:req.userId})
         if(!hotel){return res.json({success:false, message:"No hotel found"})}
 
         // upload images to cloudinary 
@@ -25,9 +24,9 @@ export const createRoom = async(req, res)=>{
                 amenities: JSON.parse(amenities),
                 images,
             })
-            response.json({ success:true, message:"room created successful;y"})
+            res.json({ success:true, message:"room created successfully"})
     } catch (error) {
-        response.json({success:false, message: error.message})
+        res.json({success:false, message: error.message})
         
     }
 
@@ -40,9 +39,9 @@ export const getRooms = async(req, res)=>{
             path: 'hotel',
             populate: {
                 path :'owner',
-                select: 'image'
-            }
-        }).sort({createdAt: -1})
+                select: 'image',
+            },
+        }).sort({createdAt: -1});
         res.json({success:true, rooms});
         
     } catch (error) {
@@ -50,13 +49,15 @@ export const getRooms = async(req, res)=>{
         
     }
 
-}
+};
 
 
 // API to get all rooms for a specific hotel
 export const getOwnerRooms = async(req, res)=>{
     try {
-       const hotelData= await Hotel({owner:req.auth.userId})
+       const hotelData= await Hotel.findOne({owner:req.userId})
+        
+    //    const hotelData= await Hotel.findOne({owner:req.auth.userId})
        const rooms =await Room.find({hotel:hotelData._id.toString()}).populate("hotel");
        res.json({success:true, rooms})
         

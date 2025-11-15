@@ -21,8 +21,9 @@ app.use(cors()) // enable cross-origin resource sharing
 
 app.post( "/api/clerk",  express.raw({ type: "application/json" }),  clerkWebhooks);
 //middleware
-app.use(express.json())
 app.use(clerkMiddleware())
+
+app.use(express.json())
 // app.get('/api/hotels/ping', (req,res)=>res.send('pong'));
 
 // API to listen to clerk webhooks //wrong order.

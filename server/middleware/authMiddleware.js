@@ -4,16 +4,18 @@ import User from "../models/User.js";
 
 export const protect = async (req, res, next) =>{
     console.log('Authorization:', req.headers.authorization);
-console.log('req.auth:', req.auth); // 或 getAuth(req)
+    console.log('req.auth:', req.auth); // 或 getAuth(req)
 
     // const {userId} = res.auth;
-    const { userId } = getAuth(req)
+    const { userId } = req.auth ? req.auth() : getAuth(req);  // handles both styles
+
+    // const { userId } = req.auth;
     if (!userId) {
         res.json({success: false, message:"Not authenticated"})
     } else{
         const user = await User.findById(userId);
-        req.user = user;
-        next()
+        req.userId = userId;
+        next();
     }
 
 }

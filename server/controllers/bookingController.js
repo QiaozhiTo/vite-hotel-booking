@@ -37,7 +37,9 @@ export const checkAvailabilityAPI = async(req,res) =>{
 export const createBooking = async (req, res) =>{
     try {
         const {room, checkInDate, checkOutDate, guests} = req.body;
-        const user = req.user._id;
+        // const user = req.user._id;
+        const user = req.userId;
+
 
         // before booking check availability
         const isAvailable = await checkAvailability({
@@ -80,7 +82,9 @@ export const createBooking = async (req, res) =>{
 
 export const getUserBookings = async(req, res) =>{
     try {
-        const user = req.user._id;
+        // const user = req.user._id;
+        const user = req.userId;
+
         const bookings = await Booking.find({user}).populate("room hotel").sort({
             createdAt: -1
         })

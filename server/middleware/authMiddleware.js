@@ -3,10 +3,8 @@ import User from "../models/User.js";
 // Middleware to check if user is authenticated 
 
 export const protect = async (req, res, next) =>{
-    console.log('Authorization:', req.headers.authorization);
-    console.log('req.auth:', req.auth); // 或 getAuth(req)
-
-    // const {userId} = res.auth;
+   try {
+     // const {userId} = res.auth;
     const { userId } = req.auth ? req.auth() : getAuth(req);  // handles both styles
 
     // const { userId } = req.auth;
@@ -15,7 +13,14 @@ export const protect = async (req, res, next) =>{
     } else{
         const user = await User.findById(userId);
         req.userId = userId;
+        req.user = user;
         next();
     }
+    
+   } catch (error) {
+    console.error("protect error", error.message)
+    
+   }
+   
 
 }

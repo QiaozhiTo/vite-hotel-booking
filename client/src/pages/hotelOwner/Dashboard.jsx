@@ -1,9 +1,39 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import Title from '../../components/Title'
 import { dashboardDummyData } from '../../assets/assets'
 import { assets } from '../../assets/assets'
+import { useAppContext } from '../../context/AppContext.jsX'
+
 
 const Dashboard = () => {
+    const {user, getToken, axios, currency , toast} = useAppContext();
+    const [dashboardData, setDashboardData] = useState({
+        bookings: [],
+        totalBookings:0,
+        totalRevenue:0,
+    })
+
+    const fetchDashboardData = async () =>{
+        try {
+            const { data } = await axios.get('/api/bookings/hotel', {headers: {Authorization: `Bearer ${await getToken()}`}})
+            if ( data.success) {
+                setDashboardData(data.dashboardData)
+            } else {
+                toast.error(data.message)
+            }
+            
+        } catch (error) {
+            toast.error(error.message)
+            
+        }
+    }
+
+    useEffect(() => {
+        if (user){
+            fetchDashboardData();
+        }
+
+    }, [user])
   return (
     <div>
         <Title align ='left' font ='outfit' title='Dashboard' subTitle='Monitor your room listings, track bookings and analyze revenue—all in one place. Stay updated with real-time insights to ensure smooth operations.'></Title>
@@ -14,7 +44,7 @@ const Dashboard = () => {
 
                 <div>
                     <p className='text-blue-500 text-lg'>Total Bookings</p>
-                    <p className='text-neutral-400 text-base'>0</p>
+                    <p className='text-neutral-400 text-base'>0</p> 
                 </div>
             </div>
             
@@ -22,11 +52,14 @@ const Dashboard = () => {
                 <img src={assets.totalRevenueIcon} alt="" className='max-sm:hidden h-10'/>
                 <div>
                 <p className='text-blue-500 text-lg'>Total Revenue</p>
-                <p className='text-neutral-400 text-base'>$0</p>
+                    {/* update currency symbol */}
+
+                <p className='text-neutral-400 text-base'>{currency}{dashboardData.totalRevenue}</p>
                 </div>
             </div>
 
         </div>
+
         {/* recent bookings */}
         <h2 className='text-xl text-blue-950/70 font-medium mb-5'>Recent Bookings</h2>
         <div className='w-full max-w-3xl text-left border border-gray-300 rounded-lg max-h-80 overflow-y-scroll'>
@@ -40,7 +73,7 @@ const Dashboard = () => {
                     </tr>
                 </thead>
             <tbody className='text-sm'>
-                {dashboardDummyData.bookings.map((item, index) => (
+                {dashboardData.bookings.map((item, index) => (
                     <tr key={index}>
                         <td className='py-3 px-4 text-gray-700 border-t border-gray-300'>
                             {item.user.username}
@@ -51,7 +84,7 @@ const Dashboard = () => {
                         </td>
 
                         <td className='py-3 px-4 text-gray-700 border-t border-gray-300 text-center'>
-                            $ {item.totalPrice}
+                            {currency}{item.totalPrice}
                         </td>
 
                         <td className='max-sm:hidden py-3 px-4 text-gray-700 border-t border-gray-300 text-center' >

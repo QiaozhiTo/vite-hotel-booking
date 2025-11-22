@@ -4,7 +4,11 @@ import { messageInRaw } from "svix";
 export const getUserData = async (req, res) =>{
     try {
         const role = req.user.role;
-        const recentSearchedCities = req.user.recentSearchedCities;
+        // const recentSearchedCities = req.user.recentSearchedCities;
+        const rawCities = req.user.recentSearchedCities || [];
+        const recentSearchedCities = rawCities
+        .filter(c => typeof c === 'string' && c.trim() !== '');
+
         res.json({success:true, role, recentSearchedCities})
 
     } catch (error) {
@@ -17,13 +21,19 @@ export const getUserData = async (req, res) =>{
 // store user searched cities 
 export const storeRecentSearchedCities = async (req, res) =>{
     try {
-        const {recentSearchedCities} = req.body;
+        // storeRecentSearchedCities are array, storeRecentSearchedCity is the new searched city, don't mix them !!!
+
+        const {recentSearchedCity} = req.body;
+        //const {recentSearchedCities} = req.body;❗ ❌
+
         const user = await req.user ;
         if(user.recentSearchedCities.length < 3){
-            user.recentSearchedCities.push(recentSearchedCities)
+          //  user.recentSearchedCities.push(recentSearchedCity) ❗ ❌
+            user.recentSearchedCities.push(recentSearchedCity)
+
         } else{
             user.recentSearchedCities.shift()
-            user.recentSearchedCities.push(recentSearchedCities)
+            user.recentSearchedCities.push(recentSearchedCity)
 
         }
         await user.save();

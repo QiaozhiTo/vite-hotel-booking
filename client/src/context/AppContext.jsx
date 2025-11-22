@@ -44,7 +44,7 @@ export const AppProvider = ( {children}) =>{
                 // retry fetching user details after 5 sec
                 setTimeout(()=>{
                     fetchUser()
-                }, 5000)
+                }, 2000)
             }
         } catch (error) {
             toast.error(error.message)

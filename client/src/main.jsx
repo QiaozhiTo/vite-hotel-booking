@@ -5,7 +5,7 @@ import App from './App.jsx'
 // BrowserRouter to wrap our APP
 import { BrowserRouter } from 'react-router-dom'
 import { ClerkProvider } from '@clerk/clerk-react'
-import { AppProvider } from './context/AppContext.jsX'
+import { AppProvider } from './context/AppContext'
 
 const PUBLISHABLE_KEY = import.meta.env.VITE_CLERK_PUBLISHABLE_KEY
 

@@ -1,8 +1,14 @@
 import Booking from "../models/Booking.js";
 import Hotel from "../models/Hotel.js";
 import Room from "../models/room.js";
+import transporter from "../configs/nodemailer.js";
+
 //function to check availability of room
-const checkAvailability = async([checkInDate, checkOutDate, room]) =>{
+
+// ❌❌❌这里参数解构写得是数组，前端（RoomDetails.jsx)传入的{checkInDate, checkOutDate, room}是对象
+//const checkAvailability = async([checkInDate, checkOutDate, room]) =>{ ❌
+const checkAvailability = async({checkInDate, checkOutDate, room}) =>{
+
     try {
         const bookings = await Booking.find({
             room,
@@ -68,6 +74,32 @@ export const createBooking = async (req, res) =>{
             checkOutDate,
             totalPrice,
         })
+        const mailOptions = {
+            from: process.env.SENDER_EMAIL,
+            to: req.user.email,
+            subject: "Hotel booking details",
+            text: "Hello world?", // plain‑text body
+            html: `
+            <h2> Your Booking Details</h2>
+            <p>Dear ${req.user.username},</p>
+            <p>Thank you for your booking! Here are your details:</p>
+            <ul>
+                <li><strong>Booking ID:</strong> ${booking._id}</li>
+                <li><strong>Hotel name:</strong> ${roomData.hotel.name}</li>
+                <li><strong>Address:</strong> ${roomData.hotel.address}</li>
+                <li><strong>Date ID:</strong> ${booking.checkInDate.toDateString()}</li>
+                <li><strong>Booking Amount:</strong> ${process.env.CURRENCY || '$'}${booking.totalPrice}/ night</li>
+            </ul>
+            <p>We look forward to welcoming you!</p>
+            <p>If you need to make any changes, feel free to contact us.</p>
+            `, // HTML body
+        }
+        // send email before response
+        await transporter.sendMail(mailOptions);
+        
+
+// Wrap in an async IIFE so we can use await.
+        
         res.json({ success:true, message:"Booking created successfully"})
 
     } catch (error) {

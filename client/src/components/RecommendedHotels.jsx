@@ -7,11 +7,14 @@ import { useAppContext } from '../context/AppContext'
 import { useState } from 'react'
 
 const RecommendedHotels = () => {
+    
     const{ rooms, searchedCities } = useAppContext();
     const [recommended, setRecommended] = useState([]);
     const filterHotels = () =>{
         // const filteredHotels = rooms.slice().filter( room => searchedCities.includes(room.hotel.city));
         // recommend only the most recent searched City
+        console.log('searchedCities = ', searchedCities, 'isArray?', Array.isArray(searchedCities));
+
         const currentCity = [...searchedCities]
                             .reverse()
                             .find(city => typeof city==='string' && city.trim() != '');

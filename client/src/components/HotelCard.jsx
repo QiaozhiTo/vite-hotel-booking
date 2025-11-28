@@ -4,9 +4,6 @@ import { assets } from '../assets/assets'
 
 const HotelCard = ({room, index}) => {
     // near the top of the component (not inside return)
-console.log('room:', room);
-console.log('room.hotel:', room?.hotel);
-console.log('pricePerNight:', room?.hotel?.pricePerNight);
 
   return (
     <Link to ={'/rooms/' + room._id} onClick = {() => scrollTo(0,0)} key={room._id}

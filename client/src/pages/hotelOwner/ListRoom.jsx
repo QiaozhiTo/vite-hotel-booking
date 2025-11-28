@@ -2,7 +2,7 @@ import React from 'react'
 import Title from '../../components/Title'
 // import { roomsDummyData } from '../../assets/assets'
 import { useState } from 'react'
-import { useAppContext } from '../../context/AppContext.jsx'
+import { useAppContext } from '../../context/'
 import toast from 'react-hot-toast'
 import { useEffect } from 'react'
 

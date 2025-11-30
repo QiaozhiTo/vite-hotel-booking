@@ -11,6 +11,7 @@ import hotelRouter from "./routes/hotelRoutes.js";
 import connectCloudinary from "./configs/cloudinary.js";
 import roomRouter from "./routes/roomRoutes.js";
 import bookingRouter from "./routes/bookingRoutes.js";
+import { stripeWebhooks } from "./controllers/stripeWebhooks.js";
 
 
 connectDB() //call connectDB function, 'npm run server' will see Database connected
@@ -18,6 +19,9 @@ connectCloudinary();
 
 const app = express()
 app.use(cors()) // enable cross-origin resource sharing
+
+// api to listen to stripewebhooks
+app.post('/api/stripe', express.raw({type: "application/json" }), stripeWebhooks);
 
 app.post( "/api/clerk",  express.raw({ type: "application/json" }),  clerkWebhooks);
 //middleware

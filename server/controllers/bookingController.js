@@ -185,7 +185,6 @@ export const stripePayment = async (req,res) =>{
 
         
     } catch (error) {
-        res.json({success : false, message:"Payment Failed"})
-        
+        res.json({success : false, message:"Payment Failed"})   
     }
 }

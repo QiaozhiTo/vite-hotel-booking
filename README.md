@@ -6,7 +6,7 @@ QuickStay is a modern full-stack hotel booking application that allows users to 
 Built with a clean React + Tailwind UI, secure Clerk authentication, a Node.js + Express backend, and MongoDB for persistence, QuickStay demonstrates production-grade engineering patterns suitable for SDE portfolio projects.
 
 Live Demo: https://quickstay2.vercel.app/  
-(Frontend on Vercel, Backend on — your deployment platform)
+
 
 ---
 
@@ -85,11 +85,11 @@ quickstay/
 │
 └── README.md
 
+---
 
-| Method | Endpoint                           | Description             |
-| ------ | ---------------------------------- | ----------------------- |
-| POST   | `/api/bookings/check-availability` | Check room availability |
-| POST   | `/api/bookings/create`             | Create new booking      |
-| GET    | `/api/bookings/user/:id`           | Get user bookings       |
+## 🚀 Getting Started
 
-
+### 1️⃣ Clone the repository
+```bash
+git clone https://github.com/yourusername/quickstay.git
+cd quickstay

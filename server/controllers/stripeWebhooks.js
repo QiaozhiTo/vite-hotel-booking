@@ -1,5 +1,5 @@
 import stripe from "stripe"
-import Booking from "../models/Booking";
+import Booking from "../models/Booking.js";
 export const stripeWebhooks = async (request, response) =>{
     //stipe gateway initialize
 
@@ -8,7 +8,7 @@ export const stripeWebhooks = async (request, response) =>{
     let event;
     try {
         
-        event = stripeInstance.webhooks.constructEvent(request.body, sig, process.env.STRIPT_WEBHOOK_SECRET)
+        event = stripeInstance.webhooks.constructEvent(request.body, sig, process.env.STRIPE_WEBHOOK_SECRET)
     } catch (err) {
         response.status(400).send(`Webhook Error: ${err.message}`)
         
